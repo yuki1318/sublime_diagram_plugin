@@ -8,5 +8,10 @@
 		"caption": "Diagram: Generate Diagrams - svg",
 		"command": "display_diagrams",
 		 "args":{"output":"svg"}
+	},
+	{
+		"caption": "Diagram: Generate Diagrams - emf",
+		"command": "display_diagrams",
+		 "args":{"output":"emf"}
 	}
 ]

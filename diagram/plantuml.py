@@ -7,6 +7,8 @@ from os.path import abspath, dirname, exists, join, splitext
 from tempfile import NamedTemporaryFile
 from sublime import platform, message_dialog
 
+import subprocess
+import sys
 from . import g_output
 
 import sys
@@ -24,7 +26,8 @@ OUTPUT_FORMAT_DICT = {
     'svg':   ('-tsvg',   '.svg'),   # generate images using SVG format
     'txt':   ('-ttxt',   '.txt'),   # generate images with ASCII art
     'utxt':  ('-tutxt',  '.utxt'),  # generate images with ASCII art using Unicode characters
-    'latex': ('-tlatex', '.tex')   # generate images using LaTeX/Tikz format
+    'latex': ('-tlatex', '.tex'),   # generate images using LaTeX/Tikz format
+    'emf':   ('-tsvg',   '.svg'),   # generate images using SVG format and convert to EMF format(need inkscape)
     # ------------------------------
     # These formats are also supported by plantUml, but they need some prerequisite to be installed...
     # PlantUml return_code = 1 on invocation.
@@ -52,8 +55,10 @@ class PlantUMLDiagram(BaseDiagram):
             if self.proc.NEW_FILE:
                 self.file = NamedTemporaryFile(prefix=sourceFile, suffix=self.output_file_extension, delete=False)
             else:
-                sourceFile = splitext(sourceFile)[0] + self.output_file_extension
-                self.file = open(sourceFile, 'w')
+                self.file_name = splitext(sourceFile)[0] + self.output_file_extension
+                self.file = open(self.file_name, 'w')
+                if g_output.g_output == "emf":
+                    self.emf_file = splitext(sourceFile)[0] + ".emf"
 
     def generate(self):
         """
@@ -107,7 +112,15 @@ class PlantUMLDiagram(BaseDiagram):
             print(self.text)
             return
         else:
-            return self.file
+            if g_output.g_output == 'emf':
+                print('inkscape -f {file} -M {emf_file}'.format(file=self.file_name, emf_file=self.emf_file))
+                try:
+                    subprocess.call('inkscape -f {file} -M {emf_file}'.format(file=self.file_name, emf_file=self.emf_file), shell=True)
+                except subprocess.CalledProcessError:
+                    print('外部プログラムの実行に失敗しました')
+                return self.file
+            else:
+                return self.file
 
 class PlantUMLProcessor(BaseProcessor):
     DIAGRAM_CLASS = PlantUMLDiagram
