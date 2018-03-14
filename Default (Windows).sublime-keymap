@@ -1,3 +1,6 @@
 [
-    {"keys": ["alt+m"], "command": "display_diagrams"}
+    {
+    	"keys": ["alt+m"],
+    	"command": "display_diagrams", "args":{"output":"png"}
+    }
 ]

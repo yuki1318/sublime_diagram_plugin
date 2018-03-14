@@ -5,7 +5,9 @@ from subprocess import Popen as execute, PIPE, STDOUT, call
 from os import getcwd, chdir
 from os.path import abspath, dirname, exists, join, splitext
 from tempfile import NamedTemporaryFile
-from sublime import platform
+from sublime import platform, message_dialog
+
+from . import g_output
 
 import sys
 if sys.version_info < (3,0):
@@ -35,7 +37,7 @@ class PlantUMLDiagram(BaseDiagram):
     def __init__(self, processor, sourceFile, text):
         super(PlantUMLDiagram, self).__init__(processor, sourceFile, text)
 
-        output_format = self.proc.OUTPUT_FORMAT
+        output_format = g_output.g_output
         self.output_format_arg, self.output_file_extension = OUTPUT_FORMAT_DICT.get(output_format, (None, None))
         if not self.output_format_arg:
             raise Exception("Unsupported value '%s' for setting 'output_format'" % (output_format))

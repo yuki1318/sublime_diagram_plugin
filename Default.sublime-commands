@@ -1,6 +1,12 @@
 [
-  {
-    "caption": "Diagram: Generate Diagrams for Active View",
-    "command": "display_diagrams"
-  }
+	{
+		"caption": "Diagram: Generate Diagrams - png",
+		"command": "display_diagrams",
+		 "args":{"output":"png"}
+	},
+	{
+		"caption": "Diagram: Generate Diagrams - svg",
+		"command": "display_diagrams",
+		 "args":{"output":"svg"}
+	}
 ]
