@@ -1,6 +1,10 @@
 [
-    {
-    	"keys": ["alt+m"],
-    	"command": "display_diagrams", "args":{"output":"png"}
-    }
+	{
+		"keys": ["alt+m"],
+		"command": "display_diagrams", "args":{"output":"png"}
+	},
+	{
+		"keys": ["alt+shift+m"],
+		"command": "show_overlay", "args": {"overlay": "command_palette", "text": "Diagram: Generate "}
+	}
 ]
